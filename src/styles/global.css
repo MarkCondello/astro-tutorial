@@ -79,7 +79,7 @@ h1 {
   }
 }
 
- 
+
 .tags {
   display: flex;
   gap: .5rem;
@@ -96,4 +96,22 @@ h1 {
       text-decoration: none;
     }
   }
+}
+a {
+  color: #00539F;
+}
+
+.tags-list {
+  display: flex;
+  flex-wrap: wrap;
+  list-style: none;
+  padding: 0;
+    & li {
+      margin: 0.25em;
+      border: dotted 1px #a1a1a1;
+      border-radius: .5em;
+      padding: .5em 1em;
+      font-size: 1.15em;
+      background-color: #F8FCFD;
+    }
 }

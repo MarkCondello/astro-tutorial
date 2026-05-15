@@ -2,26 +2,62 @@
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import BlogPost from '../../components/BlogPost.astro';
 
+// The getStaticPaths function returns an array of page routes, and all of the pages at those routes will use the same template defined in the file.
+/*
+If you need information to construct the page routes, write it inside getStaticPaths().
+To receive information in the HTML template of a page route, write it outside getStaticPaths().
+*/
 export async function getStaticPaths() {
   const allPosts = Object.values(import.meta.glob('../posts/*.md', {eager: true}));
+  const uniqueTags = [...new Set(allPosts.map((post: any) => post.frontmatter.tags).flat())];
 
-  return [
-    { params: { tag: "astro" }, props: {posts: allPosts} },
-    { params: { tag: "successes" }, props: {posts: allPosts} },
-    { params: { tag: "community" }, props: {posts: allPosts} },
-    { params: { tag: "blogging" }, props: {posts: allPosts} },
-    { params: { tag: "setbacks" }, props: {posts: allPosts} },
-    { params: { tag: "learning in public" }, props: {posts: allPosts} },
-  ];
+  return uniqueTags.map((tag) => {
+    const filteredPosts = allPosts.filter((post: any) => post.frontmatter.tags.includes(tag));
+    return {
+      params: { tag },
+      props: { posts: filteredPosts }, // its the posts set here that are used as props
+    };
+  });
 }
 
 const { tag } = Astro.params;
 const { posts } = Astro.props;
-const filteredPosts = posts.filter((post: any) => post.frontmatter.tags?.includes(tag))
+
 ---
 <BaseLayout pageTitle={tag}>
   <p>Posts tagged with {tag}</p>
   <ul>
-    {filteredPosts.map((post: any) => <BlogPost url={post.url} title={post.frontmatter.title} />)}
+    {posts.map((post: any) => <BlogPost url={post.url} title={post.frontmatter.title} />)}
   </ul>
 </BaseLayout>
+
+<!--
+
+/*
+In src/pages/tags/[tag].astro, the filtering happens inside getStaticPaths in two passes:
+
+Load all markdown posts
+allPosts is built from import.meta.glob('../posts/*.md', { eager: true }).
+That gives an array of post modules, each with frontmatter (including tags).
+Build one page per unique tag
+uniqueTags collects every tag from every post:
+map each post to post.frontmatter.tags
+flatten into one list
+remove duplicates with Set
+For each tag, create filteredPosts
+In uniqueTags.map(tag => { ... }), this line does the transformation:
+filteredPosts = allPosts.filter(post => post.frontmatter.tags.includes(tag))
+So filteredPosts contains only posts whose tags array includes that specific tag.
+Return route data Astro uses at build time
+For each tag, getStaticPaths returns:
+params: { tag } so the URL is generated for that tag
+props: { posts: filteredPosts } so only matching posts are passed to that page instance
+Then outside getStaticPaths:
+
+const { tag } = Astro.params gets the current URL tag
+const { posts } = Astro.props gets the already-filtered list for that tag
+So posts is not filtered later in the template. It is pre-filtered in getStaticPaths and injected as props for each generated tag page.
+*/
+
+
+-->
