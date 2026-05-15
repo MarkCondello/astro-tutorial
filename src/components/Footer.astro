@@ -1,0 +1,42 @@
+---
+import Social from '../components/Social.astro'
+const platform = "github";
+const username = "withastro";
+
+const socials = [
+  {
+    platform: 'LinkedIn',
+    url: 'https://www.linkedin.com/in/markcondello/'
+  },
+  
+  {
+    platform: 'Instagram',
+    url: 'https://www.instagram.com/markcondello/',
+  },
+
+]
+---
+<style>
+  footer {
+    display: flex;
+    gap: 1rem;
+    margin-top: 2rem;
+  }
+  .socials {
+    list-style: none;
+    display: flex;
+    gap: 1rem;
+  }
+</style>
+<footer>
+  <p>Learn more about my projects on <a href={`https://www.${platform}.com/${username}`}>{platform}</a>!</p>
+
+  {socials.length &&
+  <ul class="socials">
+    {socials.map((social) =>
+    <li>
+      <Social url={social.url} platform={social.platform} />
+      {/* <a href={social.url} target="_blank">{social.platform}</a> */}
+    </li>)}
+  </ul>}
+</footer>
