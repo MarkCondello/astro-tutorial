@@ -106,12 +106,41 @@ a {
   flex-wrap: wrap;
   list-style: none;
   padding: 0;
-    & li {
-      margin: 0.25em;
-      border: dotted 1px #a1a1a1;
-      border-radius: .5em;
-      padding: .5em 1em;
-      font-size: 1.15em;
-      background-color: #F8FCFD;
-    }
+  & li {
+    margin: 0.25em;
+    border: dotted 1px #a1a1a1;
+    border-radius: .5em;
+    padding: .5em 1em;
+    font-size: 1.15em;
+    background-color: #F8FCFD;
+  }
+}
+
+/* light and dark mode settings */
+/* var */
+:root {
+  --skillColor: #4c1d95;
+}
+html.dark {
+  background-color: #0d0950;
+  color: #fff;
+  --skillColor: yellow;
+}
+
+.dark .menu {
+  background-color: #fff;
+  color: #000;
+}
+
+.dark .nav-links a:hover,
+.dark .nav-links a:focus {
+  color: #0d0950;
+}
+
+.dark .nav-links a {
+  color: #fff;
+}
+
+.dark a {
+  color: #ff9776;
 }

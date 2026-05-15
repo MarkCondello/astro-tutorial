@@ -13,15 +13,15 @@ const identity = {
 const skills = ["HTML", "CSS", "JavaScript", "React", "Astro", "Writing Docs"];
 
 const happy = true;
-const finished = false;
+const finished = true;
 const goal = 1;
 
-const skillColor = "#4c1d95";
+// const skillColor = var(--skillColor);
 const skillFontWeight = "600";
 const skillTextCase= "uppercase";
 ---
 <!-- The is:global property did not work: https://docs.astro.build/en/tutorial/4-layouts/1/#try-it-yourself---use-your-layout-everywhere -->
-<style is:global define:vars={{skillColor, skillFontWeight, skillTextCase}}>
+<style is:global define:vars={{skillFontWeight, skillTextCase}}>
 	// Had to restart the server to see the css variable applied/
 	h1 {
 		color: var(--skillColor);
